@@ -1,7 +1,9 @@
 # iOS
+SWIFT 스위프트 프로그래밍 3판 swift5 /야곰 지음
+을 읽고 공부한 내용을 정리 중
+
 :umbrella: iOS 공부
 
-책 : SWIFT 스위프트 프로그래밍 3판 swift5 /야곰 지음
 
 1/1(금)
 
