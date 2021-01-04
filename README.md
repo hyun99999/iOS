@@ -99,8 +99,19 @@ ch15.맵,필터,리듀스
     > 두번재 형태는 클로저가 따로 결과값을 반환하지 않는 형태. 대신 inout 매개변수를 사용하여 초기값에 직접 연산을 실행.
 
 ch16.모나드
-
-
+  - 컨텍스트
+    > 옵셔널이 여기 해당. 컨텐츠를 담고있다.
+  - 함수객체
+    > 맵을 적용할 수 있는 컨테이너 타입. Array, Dictionary, Set 등.
+  - 모나드
+    - flatMap
+      > Map 과 다르게 컨텍스트 내부의 컨텍스트를 모두 같은 위상으로 평평하게 펼쳐준다는 의미.
+    ```swift
+    func map<U>(_ transform: (Wrapped) throws -> U) rethrows -> U?
+    func flatMap<U>(_ tranform: (Wrapped) throws -> U?) rethrows -> U?
+    ```
+      > flatMap 은 클로저를 실행하면 알아서 내부 컨테이너까지 값을 추출합니다.
+      > flatMap 은 .none 이되거나 nil 이 되는 등에는 별도의 예외처리없이 빈 컨테이너를 반환합니다.
 
 
 
