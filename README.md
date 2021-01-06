@@ -110,8 +110,19 @@ ch16.모나드
     func map<U>(_ transform: (Wrapped) throws -> U) rethrows -> U?
     func flatMap<U>(_ tranform: (Wrapped) throws -> U?) rethrows -> U?
     ```
-      > flatMap 은 클로저를 실행하면 알아서 내부 컨테이너까지 값을 추출합니다.
-      > flatMap 은 .none 이되거나 nil 이 되는 등에는 별도의 예외처리없이 빈 컨테이너를 반환합니다.
+      > flatMap 은 클로저를 실행하면 알아서 내부 컨테이너까지 값을 추출.
+      > flatMap 은 .none 이되거나 nil 이 되는 등에는 별도의 예외처리없이 빈 컨테이너를 반환.
+ch17.서브스크립트 문법
+  > 인스턴스의 이름 뒤에 대괄호로 감싼 값으 써줌으로써 인스턴스 내부의 특정값에 접근 가능.
+  > 하나의 타입이 여러개의 서브스크립트를 가질 수도 있다. 
+  ```swift
+  //서브스크립트 정의 문법
+  subscript(... : ...) -> ... {}
+  //사용
+  instance[]
+  ```
+  - 타입 서브스크립트
+    > 인스턴스가 아닌 타입 자체에서 사용할 수 있는 서브스크립트. subscript 키워드 앞에 static 키워드 추가. 클래스의 경우 class 키워드 사용가능(상속 시 재정의 가능.)
 
 
 
