@@ -47,6 +47,67 @@ returnedClosrue() //Cosure A
 ```
 
 2. Notification 을 통해 인지
+- 한 객체가 다른 객체에 자신의 업데이트 상태를 알려주는 방법 중 하나. 방식은 instance-to-instance communication.
+- 라디오 센터처럼 전파를 쏘아주는 구조이다. 어떤 특정 작업이 완료되거나 이벤트가 발생할 경우 이를 다른 객체에 알려줄 수 있다. 작업을 하는 인스턴스가 자신이 수행하는 작업이 완료되면 Notification 을 통해 자신의 채널을 듣고 있는 인스턴스들에게 이를 통보할 수 있다.
+- 이러한 notification 은 프로그래밍 디자인 중 observation 패턴 중 하나로써 MVC 구조에서 Model 이 Controller 에게 말을 걸기 위해 사용되는 방식.
+(1)Notification
+```swift
+import UIKit
+
+class ViewController: UIViewController {
+
+//ViewController가 .addObserver메서드를 통해서 UIKeyboardWillShow에 가입. 키보드가 나타날때 selector에 등록된 메서드 실행.
+  override func viewDidLoad() {
+      NotificationCenter.default.addObsever(self,
+                                            selector: #selector(keyboardAppeared),
+                                            name: .UIKeyboardWillShow,
+                                            object: nil)
+  }
+  
+  //NotificationCenter 은 해제주어야 한다.
+  denit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
+  //이벤트 실행 시 실행할 함수
+  func keyboardAppeared() {
+   print("Keyboard Appeard")
+  }
+}
+```
+```swift
+//애플이 만들어놓은 UIKeyboardWillShow 말고 새로운 Notification 을 만들기 위해서 .post 메서드를 사용.
+//name 은 새로 만드는 Notification 의 이름을 받는 파라미터이고, object 는 sender, userInfo 는 가입자에게 보내게 될 정보.
+//userInfo는 [String: AnyObject] 구조의 Dictionary 이다.
+//신호를 보내고 싶은 이벤트에 해당하는 함수 안에 작성.
+NotificationCenter.default.post(name: Notification.Name("NewNotification"),
+                                object: self,
+                                userInfo: ["string": AnyObject])
+
+//이제 .addObserver 통해서 임의의 Notification에 가입하면 된다.
+//notification 이 올때 실행할 함수가 있는 클래스에 입력.
+NotificationCenter.default.addObserver(self,
+                                       selector: #selector(func),
+                                       name: Notification.Name("NewNotification"),
+                                       object: nil)
+```
+
+(2)KVO
+- Key-Value Obsereving 패턴은 어떤 property 가 업데이트 되었을 때 알려주는 역할. KVO 의 강점은 해당 인스턴스의 property 뿐만 아니라 남의 propery 가 업데이트 되었을 때도 알림을 받을 수 있다.
+- 구현방법 : 관찰하고자하는 property 뒤에 .addObserver 메서드를 추가하고 obserValue 메서드를 정의해서 변화가 일어날 때 수행할 코드를 넣습니다.
+```swift
+//coverImage 라는 ImageView 의 property 인 image 관찰하기 위해서 addObserver 수행. 
+coverImage.addObserver(self, forKeyPath: "image", options: .initial, context: nil)
+
+override func observeValue(forKeyPath kePath: String?,
+                          of object: Any?,
+                          change: [NSKeyValueChangeKey: Any]?,
+                          context: UnsafeMutableRawPointer?) {
+  if keyPath == "image" {
+    indicator.stopAnimating()
+  }
+}
+```
 
 3. Delegation 을 통해 인지
 - Delegation 도 Notification 처럼 한 객체가 다른 객체에 말을 걸기 위한 방법. MVC 구조에서 TableView 나 ScrollView 또는 UIView와 같은 View 가 Controller 에게 말을 걸기 위해 사용되는 방식.
