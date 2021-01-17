@@ -23,21 +23,26 @@ func someFunction(someClosure: () -> ()) {
 ```swift
 //1.탈출한 클로저를 저장할 Array. 즉, 외부에 정의된 변수에 클로저가 저장되는 경우.
 var completionHandlers: [() -> void] = []
+
 func someFunctionWithEscapingClosure(completionHandler: @escaping () -> void) {
   completionHandlers.append(completionHandler)
 }
 
 //2.함수에서 반환한 클로저가 함수 외부의 상수에 저장되는 경우.
 typealias VoidVoidClosure = ()-> void
+
 let firstClosure: VoidVoidClosure{
   print("Closure A")
 }
+
 //탈출클로저를 매개변수로 가진 함수에서 탈출클로저 리턴.
 func returnClosure:(first: @escaping VoidVoidClosure) -> VoidVoidClosure{
   return first
 }
+
 //상수에 저장.
 let returnedClosure : VoidVoidClosure = returnClosure(first : firstClosure)
+
 returnedClosrue() //Cosure A
 ```
 
@@ -45,5 +50,5 @@ returnedClosrue() //Cosure A
 
 
 
-출처 : https://m.blog.naver.com/PostView.nhn?blogId=jdub7138&logNo=220937372865&proxyReferer=https:%2F%2Fwww.google.com%2F
-출처 : SWIFT 스위프트 프로그래밍 3판 / 야곰 지음
+- 출처 : https://m.blog.naver.com/PostView.nhn?blogId=jdub7138&logNo=220937372865&proxyReferer=https:%2F%2Fwww.google.com%2F
+- 출처 : SWIFT 스위프트 프로그래밍 3판 / 야곰 지음
