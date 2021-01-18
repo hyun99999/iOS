@@ -1,5 +1,5 @@
 ## View Controller Life Cycle(생명주기)
-https://github.com/hyun99999/iOS/tree/main/ViewControllerLifeCycle
+
 <img src = "https://user-images.githubusercontent.com/69136340/104878832-0648b600-59a0-11eb-9b33-d06d82a542b5.jpg" width="350">
 
 1. loadView()
