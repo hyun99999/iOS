@@ -19,7 +19,13 @@ https://ios-development.tistory.com/18?category=889410
 <img src ="https://user-images.githubusercontent.com/69136340/104924152-619a9880-59e0-11eb-9672-067e2ccfe87a.PNG" width="500">
 
 - App delegate 와 차이점
-  - 
+  - background에서만 Unattached가 됩니다. (AppDelegate 에서는 suspended 나 background 상태에서 not running 가능.)
+  - 화살표들의 차이
+    - Scene delegate에서는 Suspended에서 바로 Inaction로 가는 화살표 없음.
+    - Scene delegate에서 Unattached에서 inactive 될때 실선. inactive에서 active가 될때 점선.
+    - Scene delegate에서 Unattached에서 background가 될때 실선입니다.
+> - *점선의 경우에는 특별한 event 없이도 시스템이 자동으로 수행해주는 상태의 전환이라고 할 수 있다.*
+> - *실선의 경우에는 사용자나 시스템에 의해 발생한 event로 인해서 발생하는 상태의 전환이라고 할 수 있다.*
 
 ## 2. iOS 12 이전 
 *- UIApplicationDelegate 객체를 사용하여 life-cycle 에 응답*
