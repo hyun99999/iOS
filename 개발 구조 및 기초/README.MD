@@ -27,12 +27,6 @@ UIViewController 에 View와 Model 을 관리하는 역할이 정의되어 있�
 - 스토리보드를 통해 출발지와 목적지를 직접 지정하는 방식
 
 
-
-
-
-
-
-
-
-
-출처 : https://ios-development.tistory.com/17?category=889410
+- 출처 : https://ios-development.tistory.com/17?category=889410
+- 출처 : https://tono18.tistory.com/11?category=837544
+- 출처 : https://developer.apple.com
