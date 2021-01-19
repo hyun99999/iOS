@@ -18,6 +18,12 @@ https://ios-development.tistory.com/18?category=889410
 - 다음은 상태전환을 보여준다.
 <img src ="https://user-images.githubusercontent.com/69136340/104924152-619a9880-59e0-11eb-9672-067e2ccfe87a.PNG" width="500">
 
+- Unattached (시스템이 connection notification 을 주기 전까지는 이 상태 유지. 메모리를 점유하고 실행중인 상태.)
+- ForegroundInactive (앱이 실행중, event 를 받지 않는 상태)
+- ForegroundActive (앱이 실행중, event 를 받고있는 상태. 다른 상태로 전환되는 동안에 이 상태를 통과하게 된다. 예를 들어 시스템 알람이 오거나 창을 내리거나 app-switching 상태에 있는 경우 등)
+- Background (앱이 백그라운드에서 실행되고 있는 상태)
+- Suspended (앱이 백그라운드에 있으며, 아무것도 실행되지 않는 상태. 메모리 점유중하지만 대기 상태)
+
 - App delegate 와 차이점
   - background에서만 Unattached가 됩니다. (AppDelegate 에서는 suspended 나 background 상태에서 not running 가능.)
   - 화살표들의 차이
@@ -29,16 +35,24 @@ https://ios-development.tistory.com/18?category=889410
 
 ## 2. iOS 12 이전 
 *- UIApplicationDelegate 객체를 사용하여 life-cycle 에 응답*
-- 
+- iOS 12 이하 버전에서는 scene 지원하지 않는다. UIKit 은 모든 life-cycle 이벤트를 UIApplicationDelegate 로 전달한다.
+- launch 후 시스템은 UI 가 화면에 표시되는지 여부에 따라서 app 을 inactive 또는 background state 로 전환.
+- foreground 로 런칭할 때 시스템은 자동으로 active 상태로 전환. 그 후에는 app 이 종료전까지 active 와 background 에서 변동한다.
+
 <img src ="https://user-images.githubusercontent.com/69136340/104924154-62332f00-59e0-11eb-8dcb-1ffd9f22b7d8.PNG" width="500">
 
-- Not Running (앱이 시작되지 않았거나 시스템에 의해 종료된 상태)
-- Inactive (앱이 실행 중, 이벤트를 받지 않은 상태)
-- Active (앱 실행 중, 이벤트 받은 상태)
+- Not Running (앱이 시작되지 않았거나 시스템에 의해 종료된 상태. 메모리에도 없고 프로세스 관점에서도 아무것도 실행되지 않는다.)
+- Inactive (앱이 실행 중, event를 받지 않는 상태)
+- Active (앱 실행 중, event 받는 상태)
 - Background (앱이 백그라운드에 있지만 코드가 실행되고 있는 상태)
-- Suspended (앱이 메모리에 남아있지만 실행되지 않은 경우) 
+- Suspended (앱이 백그라운드에 있으며, 아무것도 실행되지 않는 상태. 메모리 점유중하지만 대기 상태) 
+
+## scene, window, view 의 관계
+> - **
+> - 
 
 
 - 출처 : https://developer.apple.com/documentation/uikit/app_and_environment/managing_your_app_s_life_cycle
 - 출처 : https://developer.apple.com/documentation/uikit/app_and_environment/scenes/specifying_the_scenes_your_app_supports
 - 출처 : https://jercy.tistory.com/11?category=728321
+- 출처 : https://velog.io/@minni/iOS-Application-Life-Cycle
