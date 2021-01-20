@@ -1,4 +1,4 @@
 # RxSwift 와 MVVM
-<img src ="https://user-images.githubusercontent.com/69136340/105189575-727e1200-5b78-11eb-934a-d8ff4335039d.png" width = "450">
+<center><img src ="https://user-images.githubusercontent.com/69136340/105194329-d0acf400-5b7c-11eb-8ab5-6f5f29e7b24a.png" width = "200"></center>
 
 - RxSwift 란?
