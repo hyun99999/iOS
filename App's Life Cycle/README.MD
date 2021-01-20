@@ -1,8 +1,5 @@
 # App's Life Cycle
 
-//엔트리 포인트(UIApplicationMain) 공부해보기
-https://ios-development.tistory.com/18?category=889410
-
 ## 1. iOS 13 이후
 *- UISceneDelegate 객체를 사용하여 scene-based app 의 life-cycle 에 응답*
 - 앱이 scenes 를 지원하는 경우 UIKit 은 각각에 대해 별도의 life-cycle 이벤트를 제공.
