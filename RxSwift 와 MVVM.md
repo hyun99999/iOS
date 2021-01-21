@@ -40,6 +40,19 @@ observableInt
    ```swift
    disposeBag = DisposeBag()
    ```
+1. Observable
+- Finite Observable Sequences
+
+- Infinite Observable Sequences
+	- 보통 UI 이벤트는 무한하 관찰가능한 sequence 이다. 예로들어 기기으 가로/세로 모드에 따라 변해야하는 코드를 생각해보면 사용자가 디바이스를 절대 회전시키 않는닥 해서 이벤트가 종료되 것이 아니다. 단지 발생하지 않았을뿐. 
+
+2. Operators
+- ObservableType과 Observable 클래스에는 복잡한 논리를 구현하기 위해 많은 메서드가 포함되어 있다. 이 메서드들을 Operator라고 부른다.
+- Operator는 비동기 입력을 받아 출력만 생성하기 때문에 Operator들끼리 쉽게 혼합해서 사용이 가능합니다. Rx Operatros들은 Observable의 의해 들어온 값들을 처리하고 최종값이 나올때 방출합니다.
+
+3. Schedulers
+- Schedulers 는 Rx 에서 dispatch queue 와 동일. 
+
 ### Reactive Programming
 - RxSwift 는 Reactive Programming 에 기반을 두고 있다. 
 - Reactive. 반응형 즉 변화에 반응하여 자동으로 변경되는 것이 핵심.
@@ -51,11 +64,10 @@ var c = a + b
 a = 1
 print(c) // 8
 ```
-- MVVM 과 밀접한 연관
+### MVVM 과 밀접한 연관
   - 데이터 바인딩을 제공하는 플렛폼에서 만들어진 이벤ㅌ 중심 프로그램을 윟 특별히 개발된  RxSwift 와 연관성이 높다.
 
 - 출처 : https://ios-development.tistory.com/95
 - 출처 : https://jinshine.github.io/2019/01/01/RxSwift/1.RxSwift란/
 
-- 왜 RxSwift 인가?
-https://ios-development.tistory.com/95
+### 왜 RxSwift 인가?
