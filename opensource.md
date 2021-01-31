@@ -12,3 +12,4 @@
 ## HTTP networking
 - Alamofire : https://github.com/Alamofire/Alamofire
   > Alamofire is an HTTP networking library written in Swift.
+- Moya : https://github.com/Moya/Moya
