@@ -19,5 +19,8 @@ import Foundation
 ```
 
 # Alamofire
+- 파운데이션 프레임워크에서는 API호출하기 위해 URLRequest객체를 만들어서 사용했지만, Alamoifire는 더욱 간편하게 접근 할 수 있도록 함.
 - Alamofire 는 비동기 기반으로 네트워크 응답을 처리하기 때문에, 응답 메시지를 reponse 메소드의 결과값으로 반환받을 수 없다. 서버에서 응답이 도착했을때 실행될 로직을 클로저 형태로 작성해, reponse 메소드에 넣어주어야 한다(콜백 함수).
 - Alamofire 는 서버에서 응답이 도착하면 이를 클로저의 매개변수에 담아 호출한다.
+
+- 출처 :https://ios-development.tistory.com/62?category=894545
