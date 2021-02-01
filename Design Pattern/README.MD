@@ -40,14 +40,11 @@
 - Model 과 View 의 중개자. 뷰 모델은 뷰의 상태를 저장하고, 뷰에서 발생하는 액션에 따라 수행할 앱의 기능을 정의하는 명령을 구현. 뷰 모델은 뷰가 어떤 모습인지 전혀 알지 못한다.
 
 
-
-
-
-
-
 - 장점 : ViewModel 은 View 와 독립적이다. 즉 UIKit 관련 코드가 없다. 따라서 MVC 모델보다 유닛 테스팅하기가 좋다.
 - 단점 : ViewModel 설계가 만만치 않다. View 에 대한 처리가 복잡해질수록 ViewModel 이 오버스펙이 될 수 있다.
 
-- 출처 : https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52
-- 출처 : https://eunjin3786.tistory.com/31?category=837198
-- 출처 : https://0urtrees.tistory.com/110?category=742845
+
+> - 출처 : https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52
+> - 출처 : https://eunjin3786.tistory.com/31?category=837198
+> - 출처 : https://0urtrees.tistory.com/110?category=742845
+> - 출처 : https://velog.io/@budlebee/iOS의-MVC-MVVM
