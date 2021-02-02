@@ -23,24 +23,60 @@ import Foundation
 - Alamofire 는 비동기 기반으로 네트워크 응답을 처리하기 때문에, 응답 메시지를 reponse 메소드의 결과값으로 반환받을 수 없다. 서버에서 응답이 도착했을때 실행될 로직을 클로저 형태로 작성해, reponse 메소드에 넣어주어야 한다(콜백 함수).
 - Alamofire 는 서버에서 응답이 도착하면 이를 클로저의 매개변수에 담아 호출한다.
 
-- 요청(request) : Alamofire.request(...)
+- 예시
 ```swift
- // import Alamofire
-let param: Parameters = [
-    "userId" : "imustang",
-    "name" : "iOS개발 블로거"
-]
- 
+//현재 시간 GETG 호출
+func callCurrentTime() { 	
+AF.request("API URL. AF.request는 매개변수로 string을 받는다.").responseString() { response in
+                switch response.result {
+                case .success:
+                    self.currentTime = try! response.result.get()
+                case .failure(let error):
+                    print(error)
+                    return
+                }
+            }
+    }
+
+//POST 방식으로 Echo API 호출(httpbody 방식)
+func post() {
+        // 1. 전송할 값 준비
+        let apiURL = "api url string"
+        let userId = self.userId
+        let userPassword = self.userPassword
+        let param: Parameters = [
+            "userId": userId,
+            "userPassword": userPassword]
+        AF.request(apiURL, method: .post, parameters: param, encoding: URLEncoding.httpBody).responseJSON() {
+        response in
+            switch response.result {
+            case .success:
+                if let jsonObject = try! response.result.get() as? [String: Any] {
+                    let result = jsonObject["result"] as? String
+                    let timestamp = jsonObject["timestamp"] as? String
+                    let userId = jsonObject["userId"] as? String
+                    let userPassword = jsonObject["userPassword"] as? String
+                    
+                    self.parsedResponse = "요청결과: \(result!)" + "\n"
+                        + "응답시간: \(timestamp!)" + "\n"
+                        + "요청방식: x-www-form-urlencoded" + "\n"
+                        + "유저 ID : \(userId!)" + "\n"
+                        + "유저 password: \(userPassword!)" + "\n"
+                }
+            case .failure(let error):
+                print(error)
+                return
+            }
+        }
+    }
+    
+//POST 방식으로 Echo API 호출(JSON 방식)
+//request 에서 encodeing:JSONEncoding.default 로 수정.
 let headers: HTTPHeaders = [
-    "Authorization" : "123",
-    "Accept" : "application/json"
+"Authorization": "some auth",
+"Accept": "application/json"
 ]
- 
-let req = Alamofire.request("호출할 URL",
-                              method: .post,
-                              parameters: param,
-                              encoding: JSONEncoding.default,
-                              headers: headers)
+AF.request("api url", method: .post, parameters: param, encoding: JSONEnconding.default, headers: headers)
 ```
 - 파라미터 
   - method : 생략할 시 GET방식
@@ -56,4 +92,3 @@ let req = Alamofire.request("호출할 URL",
 >- 출처 :https://ios-development.tistory.com/62?category=894545
 >- 출처 :https://velog.io/@budlebee/iOS-Alamofire-를-이용한-API-호출
 >- 출처 :
-[
