@@ -13,3 +13,6 @@
 - Alamofire : https://github.com/Alamofire/Alamofire
   > Alamofire is an HTTP networking library written in Swift.
 - Moya : https://github.com/Moya/Moya
+
+## viewAnimator
+- viewAnimator: https://github.com/marcosgriselli/ViewAnimator
