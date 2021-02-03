@@ -1,13 +1,20 @@
 # DispatchQueue
-- 장점 : 일반 스레드 코드보다 쉽고 효율적으로 코드를 작성할 수 있다. 주로 서버에서 데이터를 내려받거나 이미지, 동영상 등 멀티미디어 처리와 같은 별도의 스레드에서 처리ㄱ 필요하 작업 후 결과를 전달.
+- 장점 : 일반 스레드 코드보다 쉽고 효율적으로 코드를 작성할 수 있다. 주로 서버에서 데이터를 내려받거나 이미지, 동영상 등 멀티미디어 처리와 같은 별도의 스레드에서 처리가 필요한 작업 후 결과를 전달.
 - DispatchQueue 를 생성 시 기본은 Serial 이다. Concurrent 유형으로 바꾸려면 별도의 명시 필요.
 
 ### 대기열(queue) 유형
   - Serial
-    - 대기열에 등록한 순서대로 작업을 실행. 하나의 작업을 실행하고 끝날떄까지 대기열에 있는 다른 작업은 대기.
+    - 대기열에 등록한 순서대로 작업을 실행. 직렬이라서 하나의 작업을 실행하고 끝날때까지 대기열에 있는 다른 작업은 대기.
   - Concurrent
     - 실행중인 작업이 끝나기를 기다리지 않고 대기열에 있는 작업을 동시에 별도의 스레드를 사용하여 실행. 즉, 병렬 처리.
-
+#
+# DispatchQueue VS OperationQueue
+- OperationQueue : 기본적으로 FIFO 지만 조건에 따라 뒤의 작업 먼저 실행가능. 비동기적 실행작업을 객체 지향적인 방법으로 사용하는데 적합.
+  >- Concurrent Operation객체를 구현할 필요없이 Operation을 Operation Queue에 제출하기만하면 Concurrent Operation 객체를 만들어 줍니다.
+  >- 동시에 실행할 수 있는 연산의 최대수 지정가능. Key Value Observing(KVO)를 사용할 수 있는 많은 프로퍼티들이 있음. 일시중지, 다시시작, 취소가능
+- DispatchQueue : 작업이 복잡하지않고 간단하게 처리하거나 특정유형의 이벤트 비동기처리 시 적합(ex: 타이머, 프로세스 )
+  > Operation을 하기에는 단순한 코드들 구현할 때 사용. DispatchQueue() 처럼 객체로 만드는 큐는 명시해주어야 Concurrent로 생성 가능.
+  
 ### GCD(Grand Central Dispatch)
 - GCD 는 애플에서 만든 멀티 코어환경에서의 application 을 개발할때 도움을주는 라이브러리.Task 라는 작업을 대기열을 주어 순서대로 실행 혹은 동시에 실행시켜주는 등 많은 작업을 한다.
 - GCD 를 쓰면 쓰레드를 다루는데 개발자가 직접 관리해주어야할 일이 많이 준다. 모든 Task 를 FIFO 로 관리.
@@ -16,6 +23,7 @@
 - 엡 실행시 시스템에서 기본적으로 2개의 Queue 만들어준다.
 - Main Queue
   > 메인 쓰레드에서 사용되는 Serial Queue.
+  > UI관련 task는 이곳에서 실행. 그렇지않으면 에러발생.
 - Global Queue
   > - 편의상 사용할 수 있게 만든 Concurrent Queue.
   > - Global Queue 는 qos 파라미터를 지원.
@@ -41,7 +49,9 @@
   
 ### Sync / Async
 - sync(동기) 와 async(비동기) 라는 메소드를 가지고 있다.
-- Serial 과 Concurrent 와는 별개다. 직렬/병렬의 문제.
+- Serial 과 Concurrent 와는 별개다. (직렬/병렬의 문제.)
+- Serial, Concurrent 는 스레드의 수와 관련이 있다.
   
-- 출처: https://medium.com/nbt-tech/dispatchqueue는-어떻게-사용할까-44f22f08d62
-- 출처: https://magi82.github.io/gcd-01/
+>- 출처: https://medium.com/nbt-tech/dispatchqueue는-어떻게-사용할까-44f22f08d62
+>- 출처: https://magi82.github.io/gcd-01/
+>- 출처: https://nsios.tistory.com/31 [NamS의 iOS일기]
