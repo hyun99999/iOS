@@ -23,7 +23,7 @@
 # DispatchQueue VS OperationQueue
 - OperationQueue : 기본적으로 FIFO 지만 조건에 따라 뒤의 작업 먼저 실행가능. 비동기적 실행작업을 객체 지향적인 방법으로 사용하는데 적합.
   >- Concurrent Operation객체를 구현할 필요없이 Operation을 Operation Queue에 제출하기만하면 Concurrent Operation 객체를 만들어 줍니다.
-  >- 동시에 실행할 수 있는 연산의 최대수 지정가능. Key Value Observing(KVO)를 사용해 작업 진행상황 감시 가능. 일시중지, 다시시작, 취소가능
+  >- **동시에 실행할 수 있는 연산의 최대수 지정가능.(maxConcurrentOperationCount) Key Value Observing(KVO)를 사용해 작업 진행상황 모니터링 가능. Pause, Cancle, Resume 가능.
 - DispatchQueue : 작업이 복잡하지않고 간단하게 처리하거나 특정유형의 이벤트 비동기처리 시 적합(ex: 타이머, 프로세스 )
   > Operation을 하기에는 단순한 코드들 구현할 때 사용. DispatchQueue() 처럼 객체로 만드는 큐는 명시해주어야 Concurrent로 생성 가능.
   
