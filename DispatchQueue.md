@@ -1,3 +1,15 @@
+# iOS 환경에서의 동시성 프로그래밍 지원 종류
+- GCD (Grand Central Dispatch) : 멀티 코어와 멀티 프로세싱 환경에서 최적화된 프로그래밍을 할 수 있도록 애플이 개발한 기술입니다.
+- Operation Queue : 비동기적으로 실행되어야 하는 작업을 객체 지향적인 방법으로 사용합니다.
+
+# 동시성 프로그래밍과 병렬성 프로그래밍
+- 동시성 프로그래밍
+  >- 동싱 실행되는 것처럼 보이는 방식. 싱그코어에서 멀티스레드를 동작시키 위한 방식. 멀티태스킹을 위해서 여러개의 스레드가 번갈아가면서 실행.
+- 병렬성 프로그래밍
+  >- 물리적으로 정확히 동시에 실행되는 것을 말한다. 멀티 코어에서 멀티 스레드를 동작시키는 방식으로 **데이터 병렬성(Data Parallelism)과 작업 병렬성(Task Parallelism)** 으로 구분됩니다.
+  >- 데이터 병렬성 : 전체 데이터를 서브데이터로 나누고 병렬 처리해서 빠륵 수행.
+  >- 작업 병렬성 : 서로 다른 작업을 병렬 처리하는 것.
+
 # DispatchQueue
 - 장점 : 일반 스레드 코드보다 쉽고 효율적으로 코드를 작성할 수 있다. 주로 서버에서 데이터를 내려받거나 이미지, 동영상 등 멀티미디어 처리와 같은 별도의 스레드에서 처리가 필요한 작업 후 결과를 전달.
 - DispatchQueue 를 생성 시 기본은 Serial 이다. Concurrent 유형으로 바꾸려면 별도의 명시 필요.
@@ -11,7 +23,7 @@
 # DispatchQueue VS OperationQueue
 - OperationQueue : 기본적으로 FIFO 지만 조건에 따라 뒤의 작업 먼저 실행가능. 비동기적 실행작업을 객체 지향적인 방법으로 사용하는데 적합.
   >- Concurrent Operation객체를 구현할 필요없이 Operation을 Operation Queue에 제출하기만하면 Concurrent Operation 객체를 만들어 줍니다.
-  >- 동시에 실행할 수 있는 연산의 최대수 지정가능. Key Value Observing(KVO)를 사용할 수 있는 많은 프로퍼티들이 있음. 일시중지, 다시시작, 취소가능
+  >- 동시에 실행할 수 있는 연산의 최대수 지정가능. Key Value Observing(KVO)를 사용해 작업 진행상황 감시 가능. 일시중지, 다시시작, 취소가능
 - DispatchQueue : 작업이 복잡하지않고 간단하게 처리하거나 특정유형의 이벤트 비동기처리 시 적합(ex: 타이머, 프로세스 )
   > Operation을 하기에는 단순한 코드들 구현할 때 사용. DispatchQueue() 처럼 객체로 만드는 큐는 명시해주어야 Concurrent로 생성 가능.
   
@@ -51,6 +63,9 @@
 - sync(동기) 와 async(비동기) 라는 메소드를 가지고 있다.
 - Serial 과 Concurrent 와는 별개다. (직렬/병렬의 문제.)
 - Serial, Concurrent 는 스레드의 수와 관련이 있다.
+>- Sync : sync의 경우 하나의 작업이 Queue에서 빠져나갈 때까지 기다리기 때문에, Serial 이냐 Concurrent냐의 차이는 없습니다. sync로 모든 작업을 Queue에 넣을 경우 그 순서가 보장됩니다.
+>- Async : 큐에 작업을 추가하고, 이 작업의 완료 여부와 관계없이 다음 명령을 실행합니다. 두 개의 Serial Queue 가 존재해도 직렬 큐이기 때문에 순서는 보장된다.
+>- Concurrent Async 방식은 병렬큐에 비동기로 동작되기 때문에 작업 처리 순서가 보장되지 않는다.
   
 >- 출처: https://medium.com/nbt-tech/dispatchqueue는-어떻게-사용할까-44f22f08d62
 >- 출처: https://magi82.github.io/gcd-01/
