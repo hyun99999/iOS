@@ -43,6 +43,23 @@
 - 장점 : ViewModel 은 View 와 독립적이다. 즉 UIKit 관련 코드가 없다. 따라서 MVC 모델보다 유닛 테스팅하기가 좋다.
 - 단점 : ViewModel 설계가 만만치 않다. View 에 대한 처리가 복잡해질수록 ViewModel 이 오버스펙이 될 수 있다.
 
+### VIPER(View-Interactor-Presenter-Entity-Router)
+- 
+  >- 
+### Entity
+- Model 객체
+
+### Interactor
+- 엔터티를 조작하는 로직이 담김.
+
+### Presenter
+- Interactor 에서 데이터를 가져오고 View 에 보여준다.
+
+### View
+- Presenter 의 요청으 받고 보여주고 사용자으 입력을 받으면 Presenter 로 넘긴다.
+
+### Router
+- 화면전환담당. '언제'화면을 전환할지 알고 있는 Presenter 가 '어떻게' 화면을 전환할지 알고 있는 Router 에게 요청.
 
 > - 출처 : https://medium.com/ios-os-x-development/ios-architecture-patterns-ecba4c38de52
 > - 출처 : https://eunjin3786.tistory.com/31?category=837198
