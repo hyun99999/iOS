@@ -1,6 +1,5 @@
 # Design Pattern
 - 디자인 패턴을 정하게 되면 모든 클래스와 속성을 구조적으로 정리가능하며 팀 작업 시 원활한 의사소통과 코드 수정이 가능.
-- //vieper 모델도 공부해보자 : https://eunjin3786.tistory.com/31?category=837198
 
 ### MVC(Model-View-Controller)
 > - Model : 데이터에 관한 로직 담당(데이터 값 변경 및 관리)
@@ -44,8 +43,7 @@
 - 단점 : ViewModel 설계가 만만치 않다. View 에 대한 처리가 복잡해질수록 ViewModel 이 오버스펙이 될 수 있다.
 
 ### VIPER(View-Interactor-Presenter-Entity-Router)
-- 
-  >- 
+- <img src = "https://user-images.githubusercontent.com/69136340/107350091-58e34100-6b0c-11eb-8cd3-849ef2a13a83.png" width="600">
 ### Entity
 - Model 객체
 
