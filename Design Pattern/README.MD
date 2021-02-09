@@ -41,7 +41,7 @@
 
 - 장점 : ViewModel 은 View 와 독립적이다. 즉 UIKit 관련 코드가 없다. 따라서 MVC 모델보다 유닛 테스팅하기가 좋다.
 - 단점 : ViewModel 설계가 만만치 않다. View 에 대한 처리가 복잡해질수록 ViewModel 이 오버스펙이 될 수 있다.
-
+---
 ### VIPER(View-Interactor-Presenter-Entity-Router)
 <img src = "https://user-images.githubusercontent.com/69136340/107350091-58e34100-6b0c-11eb-8cd3-849ef2a13a83.png" width="600">
 
