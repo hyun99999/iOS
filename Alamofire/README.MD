@@ -88,7 +88,9 @@ AF.request("api url", method: .post, parameters: param, encoding: JSONEnconding.
     - .httpBody (POST 전송에서 사용되는 방식)
   - headers : 딕셔너리형태
 
+
+
 ---
->- 출처 :https://ios-development.tistory.com/62?category=894545
->- 출처 :https://velog.io/@budlebee/iOS-Alamofire-를-이용한-API-호출
->- 출처 :
+>- 출처ㅣ https://ios-development.tistory.com/62?category=894545
+>- 출처ㅣ https://velog.io/@budlebee/iOS-Alamofire-를-이용한-API-호출
+>- 출처ㅣ https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling
