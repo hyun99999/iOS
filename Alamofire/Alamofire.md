@@ -87,6 +87,7 @@ AF.request("https://httpbin.org/get") { urlRequest in
 ### Request Parameters and Parameter Encoders
 Alamofire 는 request 의 매개변수로 모든 `Encodable` 타입 지원한다. 
 >- Encodable : 자신을 외부표현(JSON 이라고 생각하면 쉽다.)으로 인코딩 할 수 있는 타입.
+
 이러한 매개변수는 `ParameterEncoder` 프로토콜을 준수하는 유형을 통해서 전달되고 `URLRequest` 에 추가되어 네트워크를 통해 전송. Alamofire 에는 `JSONParameterEncoder` 와 `URLEncoderFormParameterEncoder` 의 두가지가 포함된다.
 ```swift
 struct Login: Encodable {
