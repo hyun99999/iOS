@@ -111,7 +111,7 @@ AF.request("https://httpbin.org/post",
   * `.queryString` - request `URL` query 에 인코딩 된 문자열을 설정하거나 추가.
   * `.httpBody` - 인코딩된 문자열을 `URLRequest` 의 HTTP body 로 설정.
   
-HTTP body 와 함께 encoded 된 request 의 `Content-Type` HTTP header 는 `application/x-www-form-urlencoded;` 로 설정, `Content-Type` 설정되지 않은 경우는 `charset=utf-8` 이다.
+HTTP body 와 함께 encoded 된 request 의 `Content-Type` HTTP header 는 기본값이 `application/x-www-form-urlencoded; charset=utf-8` 로 설정된다.
 
 **GET Request With URL-Encoded Parameters**
 ```swift
