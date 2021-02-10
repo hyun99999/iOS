@@ -105,7 +105,46 @@ AF.request("https://httpbin.org/post",
 ```
 
 ### `URLEncodedFormParameterEncoder`
-https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#introduction 까지 함.
+`URLEncodedFormParameterEncoder` 는 기존 URL query stirng 또는 요청의 HTTP body 로 설정될 URL 인코딩 문자열로 값을 인코딩. destination of the encoding 을 설정하여 인코딩 된 문자열이 설정된 위치를 제어 가능. `URLEncodedFormParameterEncoder.Destination` 에는 세가지 경우가 있다.
+  * `.methodDependent` - 인코딩 된 query 문자열 결과를 .get, .head, .delete 요청에 대한 기존 query 문자열에 적용하고 다른 HTTP 메소드의 요청에 대한 HTTP body 로 설정.
+  * `.queryString` - request `URL` query 에 인코딩 된 문자열을 설정하거나 추가.
+  * `.httpBody` - 인코딩된 문자열을 `URLRequest` 의 HTTP body 로 설정.
+  
+HTTP body 와 함께 encoded 된 request 의 `Content-Type` HTTP header 는 `application/x-www-form-urlencoded;` 로 설정, `Content-Type` 설정되지 않은 경우는 `charset=utf-8` 이다.
+
+**GET Request With URL-Encoded Parameters**
+```swift
+let parameters = ["foo": "bar"]
+
+// All three of these calls are equivalent
+AF.request("https://httpbin.org/get", parameters: parameters) // encoding defaults to `URLEncoding.default`
+AF.request("https://httpbin.org/get", parameters: parameters, encoder: URLEncodedFormParameterEncoder.default)
+AF.request("https://httpbin.org/get", parameters: parameters, encoder: URLEncodedFormParameterEncoder(destination: .methodDependent))
+
+// https://httpbin.org/get?foo=bar
+```
+**POST Request With URL-Encoded Parameters**
+```swift
+let parameters: [String: [String]] = [
+    "foo": ["bar"],
+    "baz": ["a", "b"],
+    "qux": ["x", "y", "z"]
+]
+
+// All three of these calls are equivalent
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters)
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder.default)
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder(destination: .httpBody))
+
+// HTTP body: "qux[]=x&qux[]=y&qux[]=z&baz[]=a&baz[]=b&foo[]=bar"
+```
+### Configuring the Sorting of Encoded Values
+
+ https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#configuring-the-sorting-of-encoded-values 까지 함.
 
 ### 출처
 https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling
+
+https://blog.naver.com/PostView.nhn?blogId=chltmddus23&logNo=221792035590
+
+이것도 참고해보자
