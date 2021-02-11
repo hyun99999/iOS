@@ -140,6 +140,7 @@ AF.request("https://httpbin.org/post", method: .post, parameters: parameters, en
 // HTTP body: "qux[]=x&qux[]=y&qux[]=z&baz[]=a&baz[]=b&foo[]=bar"
 ```
 ### Configuring the Sorting of Encoded Values
+Swift 4.2 이후로 딕셔너리 타입에서 사용하는 해싱 알고리즘은 런타임에 앱 실행마다 다른 임의의 내부 순서를 생성. 이로인해 인코딩된 매개변수의 순서 달라져 기타동작에 영향을 미칠 수 있다.`URLEncodedFormEncoder` 는 인코딩된 key-value 쌍을 정렬한다.
 
  https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#configuring-the-sorting-of-encoded-values 까지 함.
 
