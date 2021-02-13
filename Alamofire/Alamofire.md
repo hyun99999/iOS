@@ -148,6 +148,32 @@ let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(alph
 ```
 
 ### Configuring the Encoding of `Array` Parameters
+collection 타입을 인코딩하는 방법에 대해 제시된 특별한 사양이 없기 때문에 기본적으로 Alamofire 는 key 에 [] 를 추가한다. `foo [] = & foo [] = 2` 형식으로 인코딩합니다. 
+
+`URLEncodedFormEncoder.ArrayEncoding` 은 `Array` 매개변수의 인코딩을 위해서 다음의 메서드를 제공합니다.
+* `.brackets` - 모든 값에 대해 key에 [] 가 추가된다. 이것이 기본이다.
+* `.noBrackets` - [] 가 추가되지 않는다. 키는 있는 그대로 인코딩된다.
+
+기본적으로 Alamofire 는 `.brackets` 인코딩을 사용한다. `foo = [1,2]` 는 `foo[]=1&foo[]=2` 으로 인코딩된다.
+
+`.noBrackets` 을 사용하면 `foo = [1,2]` 는 `foo=1&foo=2` 으로 인코딩된다.
+
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `ArrayEncoding` 을 지정할 수 있다.
+
+```swift
+let parameters: [String: [String]] = [
+    "foo": ["1", "2"]
+]
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(arrayEncoding: .noBrackets))
+
+AF.request("https://httpbin.org/post", method: .post, prameters, encoder: encoder)
+
+//출처ㅣ https://velog.io/@wimes/Alamofire-%EB%B6%84%EC%84%9D
+```
+
+### Configuring the Encoding of Bool Parameters
+
+
 https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#configuring-the-sorting-of-encoded-values 여기서부터.
 
 https://velog.io/@wimes/Alamofire-%EB%B6%84%EC%84%9D 참고
