@@ -150,7 +150,7 @@ let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(alph
 ### Configuring the Encoding of `Array` Parameters
 collection 타입을 인코딩하는 방법에 대해 제시된 특별한 사양이 없기 때문에 기본적으로 Alamofire 는 key 에 [] 를 추가한다. `foo [] = & foo [] = 2` 형식으로 인코딩합니다. 
 
-`URLEncodedFormEncoder.ArrayEncoding` 은 `Array` 매개변수의 인코딩을 위해서 다음의 메서드를 제공합니다.
+`URLEncodedFormEncoder.ArrayEncoding` 열거형은 `Array` 매개변수의 인코딩을 위해서 다음의 메서드를 제공합니다.
 * `.brackets` - 모든 값에 대해 key에 [] 가 추가된다. 이것이 기본이다.
 * `.noBrackets` - [] 가 추가되지 않는다. 키는 있는 그대로 인코딩된다.
 
@@ -172,9 +172,77 @@ AF.request("https://httpbin.org/post", method: .post, prameters, encoder: encode
 ```
 
 ### Configuring the Encoding of Bool Parameters
+`URLEncodedFormEncoder.BoolEncoding` 열거형은 `Bool` 매개변수를 인코딩하기위해서 다음 메서드를 제공합니다.
 
+* `.numeric` - `true` 를 1 로 `false` 를 0 으로 인코딩. 기본케이스이다.
+* `.literal` - `true`, `false` 를 문자열 리터럴로 인코딩.
 
-https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#configuring-the-sorting-of-encoded-values 여기서부터.
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `BoolEncoding` 을 지정할 수 있다.
+
+```swift
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(boolEncoding: .numeric))
+```
+
+### Configuring the Encoding of `Data` Parameters
+`DataEncoding` 은 `Data` 인코딩을 위해서 다음의 메서드를 포함합니다.
+
+* `.deffedToData` - 데이터의 기본 `Encodable` 지원을 사용.
+* `.base64` - `Data` 를 Base64 로 인코딩된 문자열로 인코딩. 기본 케이스이다.
+* `.custom((Data) -> throws -> String)` - 주어진 클로저를 사용하여 `Data` 를 인코딩.
+
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `DataEncoding` 을 지정할 수 있다.
+
+```swift
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(dataEncoding: .base64))
+```
+
+### Configuring the Encoding of `Date` Parameters
+`Date` 를 `String` 으로 인코딩하려는 수많은 방법을 고려할 때 `DateEncoding` 에는 `Date` 매개변수를 인코딩하는 다음 메서드를 포함한다.
+
+* `.deferredToDate` - `Date` 의 `Encodable` 지원을 사용. 기본 케이스이다.
+* `.secondsSince1970` - 1970년 1월 1일 자정 UTC 이후 날짜를 초로 인코딩.
+* `.millisecondsSince1970` - 1970년 1월 1일 자정 UTC 이후 날짜를 milliseconds 로 인코딩.
+* `.iso8601` - ISO 8601 과 RFC3339 표준에 따라 날짜를 인코딩.
+* `.formatted(DateFormatter)` - 주어진 `DataFormatter` 를 사용해서 날짜를 인코딩.
+* `.custom((Date) throws -> String)` - 주어진 클로저를 사용햇 날짜를 인코딩.
+
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `DateEncoding` 을 지정할 수 있다.
+
+```swift
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(dateEncoding: .iso8601))
+```
+### Configuring the Encoding of Coding Keys
+다양한 매개변수 key 스타일 때문에 `KeyEncoding` 은 `lowerCamelCase` 의 키에서 키 인코딩을 커스터마이즈 할 수 있는 메서드를 제공한다. 
+
+* `.useDefaultKeys` - 각 타입에 지정된 키를 사용. 기본 케이스이다.
+* `.convertToSnakeCase` - `oneTwoThree` becomes `one_two_three`.
+* `.conVertToKebabCase` - `oneTwoThree` becomes `one-two-three`.
+* `.capitalized` - a.k.a `UpperCamelCase`: `oneTwoThree` becomes `OneTwoThree`.
+* `.uppercased` - `oneTwoThree` becomes `ONETWOTHREE`
+* `.lowecased` - `oneTwoThree` becomes `onetwothree`.
+* `.custom((String) -> String)` - 주어진 클로저를 사용해서 인코딩.
+
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `KeyEncoding` 을 지정할 수 있다.
+
+```swift
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(keyEncoding: .convertToSnakeCase))
+```
+
+### Configuring the Encoding of Spaces
+이전 형식의 인코더는 `+` 를 사용해서 공백을 인코딩하고 일부 서버는 여전히 최신 백분율 인코딩 대신에 이 인코딩을 기대하므로 alamofire 는 공백코딩을 위해서 다음 메서드를 포함한다.
+
+* `.percentEscaped` - 표준 퍼센트 이스케이핑을 적용해서 공백문자를 인코딩한다. `" "` 는 `%20` 으로 인코딩. 이것이 기본 케이스이다.
+* `.plusReplaced` - `" "` 를 `+` 로 대체해서 인코딩.
+
+고유한 `URLEncodedFormParameterEncoder` 를 만들고 전달된 `URLEncodedFormEncoder` 의 이니셜라이저에서 요구하는 `SpaceEncoding` 을 지정할 수 있다.
+
+```swift
+let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(spaceEncoding: .plusReplaced))
+```
+
+### `JSONParameterEncoder`
+
+https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#jsonparameterencoder 여기서부터.
 
 https://velog.io/@wimes/Alamofire-%EB%B6%84%EC%84%9D 참고
 
