@@ -16,3 +16,6 @@
 
 ## viewAnimator
 - viewAnimator: https://github.com/marcosgriselli/ViewAnimator
+
+## SwipeCellKit
+https://github.com/SwipeCellKit/SwipeCellKit
