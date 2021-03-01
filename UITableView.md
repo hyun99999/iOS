@@ -84,5 +84,9 @@ func dequeueResuableCell(withIdentifier identifier: String) -> UITableViewCell?
 
 - `dequeReuseableCell` 메소드의 파라미터로 들어가는 identifier 는 storyboard 의 UITableViewCell 에 등록한 identifier 이다.
 
+## tableViewCell 종류
+- Basic, Right Detail, Left Detail, Subtitle, Custom
+<img src ="https://user-images.githubusercontent.com/69136340/109510768-beac6280-7ae5-11eb-9f62-dd40ee2591c4.png" width = "600">
+
 ### 출처 
 출처ㅣhttps://woonhyeong.tistory.com/6?category=827228
