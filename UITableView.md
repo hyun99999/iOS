@@ -71,4 +71,18 @@ func tableView(UITableView, moveRowAt: IndexPath, to: IndexPath)
 
 ## dequeReusableCell 
 - 재사용 가능한 셀을 큐에서 빼와서 특정 identifier 의 셀을 가져오는 메소드.
-- iOS 기기는 한정된 메모리를 가지 애플리케이션을 구동한다.
+```swift
+func dequeueResuableCell(withIdentifier identifier: String) -> UITableViewCell?
+```
+- iOS 기기는 한정된 메모리를 가지 애플리케이션을 구동한다. 반복된 뷰를 사용하기보다는 뷰를 재사용 할 수 있다.
+
+> 1. 셀을 표시하기 위해서 데이터소스에 인스턴스를 요청. func tableView(UITableView, cellForRowAt: IndexPath) 
+> 2. 데이터소스는 요청마다 새로운 셀을 만드는 대신 재사용 큐(Reuse Queue)에 재사용을 위해 대기하고 있는 셀이 있는지 확인 후 있다면 새로운 데이터를 설정하고 없으면 셀을 생성.
+> 3. 데이터소스가 셀을 반환하면 테이블뷰 및 컬렉션뷰는 셀을 화면에 표시한다.
+> 4. 사용자가 스크롤을 하게 되면 이부 셀들이 화면 밖으로 사라지면서 다시 재사용 큐에 들어간다.
+> 5. 위의 과정 반복.
+
+- `dequeReuseableCell` 메소드의 파라미터로 들어가는 identifier 는 storyboard 의 UITableViewCell 에 등록한 identifier 이다.
+
+### 출처 
+출처ㅣhttps://woonhyeong.tistory.com/6?category=827228
