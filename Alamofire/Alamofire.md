@@ -241,8 +241,71 @@ let encoder = URLEncodedFormParameterEncoder(encoder: URLEncodedFormEncoder(spac
 ```
 
 ### `JSONParameterEncoder`
+`JSONParameterEncoder` 은 Swift 의 `JSONEncoder` 를 사용해서  `Encodable` 값을 인코딩하고 결과를 URLRequest 의 httpBody 로 설정한다. `Content-Type` HTTP header 필드의 값은 `application/json` 으로 기본값을 가진다.
 
-https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#jsonparameterencoder 여기서부터.
+**POST Request with JSON-Encoder Parameters
+```swift
+let parameters: [String: [String]] = [
+    "foo": ["bar"],
+    "baz": ["a", "b"],
+    "qux": ["x", "y", "z"]
+]
+
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters, encoder: JSONParameterEncoder.default)
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters, encoder: JSONParameterEncoder.prettyPrinted)
+AF.request("https://httpbin.org/post", method: .post, parameters: parameters, encoder: JSONParameterEncoder.sortedKeys)
+
+// HTTP body: {"baz":["a","b"],"foo":["bar"],"qux":["x","y","z"]}
+```
+
+### HTTP Headers
+```swift
+let headers: HTTPHeaders = [
+    "Authorization": "Basic VXNlcm5hbWU6UGFzc3dvcmQ=",
+    "Accept": "application/json"
+]
+
+AF.request("https://httpbin.org/headers", headers: headers).responseJSON { response in
+    debugPrint(response)
+}
+```
+위의 headers 를 아래와 같은 형태로도 사용 가능.
+```swift
+let headers: HTTPHeaders = [
+    .authorization(username: "Username", password: "Password"),
+    .accept("application/json")
+]
+
+AF.request("https://httpbin.org/headers", headers: headers).responseJSON { response in
+    debugPrint(response)
+}
+```
+> 변경되지 않는 HTTP headers 경우 `URLSessionConfiguration` 에서 설정하여 
+
+### Response Validation
+기본적으로 Alamofire 는 request 의 내용에 관계 없이 완료된 요청은 성공을 처리한다. 응답 처리 전에 `validate()` 를 호출하면 응답에 허용되지 않느 상태코드 또는 MIME 유형이 있는 경우 오류가 생성된다.
+
+**Automatic Validation**
+`validate()` 는 자동으로 200..<300 범위 내 상태코드가 있고 `Content-Type` 헤더가 request 의 `Accept` 헤더와 일치하는지 유효성을 검사한다. 
+```swift
+AF.request("https://httpbin.org/get").validate().responseJSON { response in
+    debugPrint(response)
+}
+//Manual Validation
+AF.request("https://httpbin.org/get")
+    .validate(statusCode: 200..<300)
+    .validate(contentType: ["application/json"])
+    .responseData { response in
+        switch response.result {
+        case .success:
+            print("Validation Successful")
+        case let .failure(error):
+            print(error)
+        }
+    }
+```
+
+https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling 여기서부터.
 
 https://velog.io/@wimes/Alamofire-%EB%B6%84%EC%84%9D 참고
 
