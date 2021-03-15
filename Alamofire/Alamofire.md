@@ -286,6 +286,7 @@ AF.request("https://httpbin.org/headers", headers: headers).responseJSON { respo
 기본적으로 Alamofire 는 request 의 내용에 관계 없이 완료된 요청은 성공을 처리한다. 응답 처리 전에 `validate()` 를 호출하면 응답에 허용되지 않느 상태코드 또는 MIME 유형이 있는 경우 오류가 생성된다.
 
 **Automatic Validation**
+
 `validate()` 는 자동으로 200..<300 범위 내 상태코드가 있고 `Content-Type` 헤더가 request 의 `Accept` 헤더와 일치하는지 유효성을 검사한다. 
 ```swift
 AF.request("https://httpbin.org/get").validate().responseJSON { response in
@@ -362,9 +363,10 @@ func responseDecodable<T: Decodable>(of type: T.Type = T.self,
 response handlers 는 서버에서 반환되는 `HTTPURLResponse` 의 유효성 검사를 하지 않는다.
 > 즉 `400..<500`와 `500..<600` 범위 내의 status codes 에 대해서 error 를 트리거하지 않는다. validate() 를 통해서 진행.
 
-*serialize : 직렬화. oop언어에서 특수하게 가공하는 것을 의미. encode 와 같다고 보면 된다.
+*serialize : 직렬화. oop언어에서 특수하게 가공하는 것을 의미. encode 와 같다고 보면 된다.*
 
 **Response Handler**
+
 `response` handler 는 response data 에 대해서 검증하지 않는다.(`.success` , `.failure` 없다.) `URLSessionDelegate` 로 직접 모든 정보를 전달한다.
 ```swfit
 AF.request("https://httpbin.org/get").response { response in
@@ -374,6 +376,7 @@ AF.request("https://httpbin.org/get").response { response in
 > `Response` 와 `Result` type 을 활용할 수 있는 다른 response serializers 를 사용하는 것을 권장한다.
 
 **Response Data Handler**
+
 `responseData` handler 는 `DataResponseSerializer` 사용해서 서버에서 반환된 `Data` 를 추출하고 유효성 검사한다. 오류가 발생하지 않고 서버로 부터 `Data` 가 반환되었으면 `Result` 는 `.success` 이다. 그리고 `value` 는 서버에서 반환받은 `Data` 가 된다.
 ```swift
 AF.request("https://httpbin.org/get").responseData { response in
@@ -382,6 +385,7 @@ AF.request("https://httpbin.org/get").responseData { response in
 ```
 
 **Response String Handler**
+
 `responseString` handler 는 `StringResponseSerializer` 를 사용해서 서버에서 반환된 `Data` 를 지정된 인코딩을 사용하는 `String` 으로 변환해준다. 오류가 발생하지 않고 서버 데이터가 성공적으로 `String` 으로 직렬화되면 `Result` 는 `.success` 이고 `value` 는 문자열이 된다.
 ```swift
 AF.request("https://httpbin.org/get").responseString { response in
@@ -390,6 +394,7 @@ AF.request("https://httpbin.org/get").responseString { response in
 ```
 
 **Response JSON Hanlder**
+
 `responseJSON` handler 는 `JSONResponseSerializer` 를 사용해서 서버에서 반환된 `Data` 를 지정된 `JSONSerializer.ReadingOptions` 를 사용해서  `Any` 타입으로 변환한다. 오류가 발생하지 않고 서버 데이터가 성공적으로 JSON object 로 직렬화 되면 `AFResult` 는 `.success` 가 되고 `value` 는 `Any` 타입이 된다.
 ```swift
 AF.request("https://httpbin.org/get").responseJSON { response in
@@ -399,6 +404,7 @@ AF.request("https://httpbin.org/get").responseJSON { response in
 > `responseJSON` 의 JSON 직렬화는 `Foundation` 프레임워크의 `JSONSerilaization` API 에 의해 처리된다.
 
 **Response `Decodable` Handler**
+
 `responseDecodable` handler 는 `DecodableResponseSerializer` 를 사용해서 서버로부터 반환된 `Data` 를 지정된 `DataDecoder` 를 사용해서 전달된 `Decodable` 타입으로 변환한다. 오류가 발생하지 않고 서버 데이터가 성공적으로 `Decodable` 타입으로 디코딩되면 `Result` 는 `.success` 가 되고 `value` 는 전달된 타입이 된다.
 ```swift
 struct HTTPBinResponse: Decodable { let url: String }
