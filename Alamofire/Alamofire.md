@@ -304,6 +304,74 @@ AF.request("https://httpbin.org/get")
         }
     }
 ```
+### Response Handling
+Alamofire 의 `DataRequest` 와 `DownloadRequest` 에 대한 response type : `DataResponse<Success, Failure: Error>` 와 `<DownloadResponse<Success, Failure: Error>`
+
+`DataRequest` 를 처리하려면 responseJSON 과 같은 response handler 를 `DataRequest` 에 연결해야한다.
+```swift
+AF.request("https://httpbin.org/get").responseJSON { response in
+    debugPrint(response)
+}
+```
+서버의 응답을 기다리기위해서 실행을 차단하는 대신 closure 가 응답을 수신 한 후 처리하기 위해 콜백으로 추가됩니다. request 의 결과는 오직 response closure 에서 사용 가능하고 응답 혹은 데이터에 따른 실행은 response closure 내에서 수행되어야 한다.
+> Alamofire 는 *asynchronously* 비동기적으로 수행됨.
+
+Alamofire 는 6개의 response handlers 를 기본으로 가지고 있다.
+```swift
+// Response Handler - Unserialized Response
+func response(queue: DispatchQueue = .main, 
+              completionHandler: @escaping (AFDataResponse<Data?>) -> Void) -> Self
+
+// Response Serializer Handler - Serialize using the passed Serializer
+func response<Serializer: DataResponseSerializerProtocol>(queue: DispatchQueue = .main,
+                                                          responseSerializer: Serializer,
+                                                          completionHandler: @escaping (AFDataResponse<Serializer.SerializedObject>) -> Void) -> Self
+
+// Response Data Handler - Serialized into Data
+func responseData(queue: DispatchQueue = .main,
+                  dataPreprocessor: DataPreprocessor = DataResponseSerializer.defaultDataPreprocessor,
+                  emptyResponseCodes: Set<Int> = DataResponseSerializer.defaultEmptyResponseCodes,
+                  emptyRequestMethods: Set<HTTPMethod> = DataResponseSerializer.defaultEmptyRequestMethods,
+                  completionHandler: @escaping (AFDataResponse<Data>) -> Void) -> Self
+
+// Response String Handler - Serialized into String
+func responseString(queue: DispatchQueue = .main,
+                    dataPreprocessor: DataPreprocessor = StringResponseSerializer.defaultDataPreprocessor,
+                    encoding: String.Encoding? = nil,
+                    emptyResponseCodes: Set<Int> = StringResponseSerializer.defaultEmptyResponseCodes,
+                    emptyRequestMethods: Set<HTTPMethod> = StringResponseSerializer.defaultEmptyRequestMethods,
+                    completionHandler: @escaping (AFDataResponse<String>) -> Void) -> Self
+
+// Response JSON Handler - Serialized into Any Using JSONSerialization
+func responseJSON(queue: DispatchQueue = .main,
+                  dataPreprocessor: DataPreprocessor = JSONResponseSerializer.defaultDataPreprocessor,
+                  emptyResponseCodes: Set<Int> = JSONResponseSerializer.defaultEmptyResponseCodes,
+                  emptyRequestMethods: Set<HTTPMethod> = JSONResponseSerializer.defaultEmptyRequestMethods,
+                  options: JSONSerialization.ReadingOptions = .allowFragments,
+                  completionHandler: @escaping (AFDataResponse<Any>) -> Void) -> Self
+
+// Response Decodable Handler - Serialized into Decodable Type
+func responseDecodable<T: Decodable>(of type: T.Type = T.self,
+                                     queue: DispatchQueue = .main,
+                                     dataPreprocessor: DataPreprocessor = DecodableResponseSerializer<T>.defaultDataPreprocessor,
+                                     decoder: DataDecoder = JSONDecoder(),
+                                     emptyResponseCodes: Set<Int> = DecodableResponseSerializer<T>.defaultEmptyResponseCodes,
+                                     emptyRequestMethods: Set<HTTPMethod> = DecodableResponseSerializer<T>.defaultEmptyRequestMethods,
+                                     completionHandler: @escaping (AFDataResponse<T>) -> Void) -> Self
+```
+response handlers 는 서버에서 반환되는 `HTTPURLResponse` 의 유효성 검사를 하지 않는다.
+> 즉 `400..<500`와 `500..<600` 범위 내의 status codes 에 대해서 error 를 트리거하지 않는다. validate() 를 통해서 진행.
+
+**Response Handler**
+`response` handler 는 response data 에 대해서 평가하지 않는다. `URLSessionDelegate` 로 직접 모든 정보를 전달한다.
+```swfit
+AF.request("https://httpbin.org/get").response { response in
+    debugPrint("Response: \(response)")
+}
+```
+> `Response` 와 `Result` type 을 활용할 수 있는 다른 response serializers 를 사용하는 것을 권장한다.
+
+**Response Data Handler**
 
 https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling 여기서부터.
 
