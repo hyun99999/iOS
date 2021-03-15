@@ -362,8 +362,10 @@ func responseDecodable<T: Decodable>(of type: T.Type = T.self,
 response handlers 는 서버에서 반환되는 `HTTPURLResponse` 의 유효성 검사를 하지 않는다.
 > 즉 `400..<500`와 `500..<600` 범위 내의 status codes 에 대해서 error 를 트리거하지 않는다. validate() 를 통해서 진행.
 
+*serialize : 직렬화. oop언어에서 특수하게 가공하는 것을 의미. encode 와 같다고 보면 된다.
+
 **Response Handler**
-`response` handler 는 response data 에 대해서 평가하지 않는다. `URLSessionDelegate` 로 직접 모든 정보를 전달한다.
+`response` handler 는 response data 에 대해서 검증하지 않는다.(`.success` , `.failure` 없다.) `URLSessionDelegate` 로 직접 모든 정보를 전달한다.
 ```swfit
 AF.request("https://httpbin.org/get").response { response in
     debugPrint("Response: \(response)")
@@ -372,10 +374,42 @@ AF.request("https://httpbin.org/get").response { response in
 > `Response` 와 `Result` type 을 활용할 수 있는 다른 response serializers 를 사용하는 것을 권장한다.
 
 **Response Data Handler**
+`responseData` handler 는 `DataResponseSerializer` 사용해서 서버에서 반환된 `Data` 를 추출하고 유효성 검사한다. 오류가 발생하지 않고 서버로 부터 `Data` 가 반환되었으면 `Result` 는 `.success` 이다. 그리고 `value` 는 서버에서 반환받은 `Data` 가 된다.
+```swift
+AF.request("https://httpbin.org/get").responseData { response in
+    debugPrint("Response: \(response)")
+}
+```
 
-https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling 여기서부터.
+**Response String Handler**
+`responseString` handler 는 `StringResponseSerializer` 를 사용해서 서버에서 반환된 `Data` 를 지정된 인코딩을 사용하는 `String` 으로 변환해준다. 오류가 발생하지 않고 서버 데이터가 성공적으로 `String` 으로 직렬화되면 `Result` 는 `.success` 이고 `value` 는 문자열이 된다.
+```swift
+AF.request("https://httpbin.org/get").responseString { response in
+    debugPrint("Response: \(response)")
+}
+```
 
-https://velog.io/@wimes/Alamofire-%EB%B6%84%EC%84%9D 참고
+**Response JSON Hanlder**
+`responseJSON` handler 는 `JSONResponseSerializer` 를 사용해서 서버에서 반환된 `Data` 를 지정된 `JSONSerializer.ReadingOptions` 를 사용해서  `Any` 타입으로 변환한다. 오류가 발생하지 않고 서버 데이터가 성공적으로 JSON object 로 직렬화 되면 `AFResult` 는 `.success` 가 되고 `value` 는 `Any` 타입이 된다.
+```swift
+AF.request("https://httpbin.org/get").responseJSON { response in
+    debugPrint("Response: \(response)")
+}
+```
+> `responseJSON` 의 JSON 직렬화는 `Foundation` 프레임워크의 `JSONSerilaization` API 에 의해 처리된다.
+
+**Response `Decodable` Handler**
+`responseDecodable` handler 는 `DecodableResponseSerializer` 를 사용해서 서버로부터 반환된 `Data` 를 지정된 `DataDecoder` 를 사용해서 전달된 `Decodable` 타입으로 변환한다. 오류가 발생하지 않고 서버 데이터가 성공적으로 `Decodable` 타입으로 디코딩되면 `Result` 는 `.success` 가 되고 `value` 는 전달된 타입이 된다.
+```swift
+struct HTTPBinResponse: Decodable { let url: String }
+
+AF.request("https://httpbin.org/get").responseDecodable(of: HTTPBinResponse.self) { response in
+    debugPrint("Response: \(response)")
+}
+```
+
+
+https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#chained-response-handlers 여기서부터.
 
 ### 출처
 https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling
