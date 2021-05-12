@@ -413,9 +413,57 @@ AF.request("https://httpbin.org/get").responseDecodable(of: HTTPBinResponse.self
     debugPrint("Response: \(response)")
 }
 ```
+### Downloading data to a file
 
+data 를 메모리로 가져오는 것 외에도 `Alamofire` 는 disk 로의 다운로딩을 위해서 `Session.download`, `DownloadRequest`, `DownloadResponse<Success, Failure: Error>` API 를 제공한다.
 
-https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#chained-response-handlers 여기서부터.
+```swift
+AF.download("https://httpbin.org/image/png").responseURL { response in
+    // Read file from provided URL.
+}
+```
+
+`responseURL` 은 다른 응답 핸들러들과 달리 다운로드 된 데이터의 위치가 포함 된 `URL` 만 반환하고 disk 에서 `Data` 를 읽지 않는다.
+
+`responseDecodable` 과 같은 other response hanlders 는 disk 에서 `Data` 읽기가 가능하다. 이 경우 큰 데이터를 메모리로 읽는 것이 포함 될 수 있으므로 이런 핸들러를 사용할 때 염두해두어야 한다.
+
+### Download File Destination
+
+다운로드 된 모든 데이터는 system temporary directory 에 저장된다. 결국 언젠가는 삭제가 되므로 더 오래 유지해야할 경우 다른 곳으로 이동시켜야 한다.
+
+final destination 으로 옮기기 위해서 `Destinaion` closure 를 제공할 수 있다. `destinationURL` 로 이동하기 전에 closure 에 지정된 옵션이 실행된다. 두가지 옵션:
+
+- `.createIntermediateDirectories` - 지정된 경우 destination URL 에 대한 intermediate directories 를 만든다.
+- `.removePreviousFile` - 지정된 경우 destionation URL 의 이전 파일을 삭제한다.
+
+```swift
+let destination: DownloadRequest.Destination = { _, _ in
+    let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let fileURL = documentsURL.appendingPathComponent("image.png")
+
+    return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+}
+
+AF.download("https://httpbin.org/image/png", to: destination).response { response in
+    debugPrint(response)
+
+    if response.error == nil, let imagePath = response.fileURL?.path {
+        let image = UIImage(contentsOfFile: imagePath)
+    }
+}
+```
+
+제시된 download destination API 를 사용할 수 있다.
+
+```swift
+let destination = DownloadRequest.suggestedDownloadDestination(for: .documentDirectory)
+
+AF.download("https://httpbin.org/image/png", to: destination)
+```
+
+### Download Progress
+
+모든 `DownloadRequest` 는 `downloadProgress` API 를 사용해서 다운로드 진행상황을 보고 할 수 있다.
 
 ### 출처
 https://github.com/Alamofire/Alamofire/blob/master/Documentation/Usage.md#response-handling
